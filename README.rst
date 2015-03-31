@@ -1,13 +1,6 @@
 interface_monitor
 =================
 
-Installation
-------------
-
-Get repo contents either by clone or zip and install with pip::
-
-    pip install -r requirements.txt
-
 Description
 -----------
 
@@ -94,3 +87,40 @@ For full usage, use ``--help``::
       --no-table                    Disable printing table of results every
                                     iteration.
 
+Platforms
+---------
+
+Currently just works on Cisco IOS, but would be trivial to make it work on
+something else. I wrote a driver-like facility into it for that reason.
+
+In the source, under the ``Platform`` class, there are only two things that
+need added:
+
+1. In the primary class namespace, there's a dictionary ``supported``. Each key
+   of this dictionary should be a string that matches a Netmiko supported 
+   platform with a value of a dictionary containting the command to be ran. %s 
+   in the command string will be substituted for the interface.
+
+2. A new method of _parse_X needs added under the class where X is the platform
+   string. This method will recieve the command result as a string as the only
+   argument (other than ``self``). Then whatever magic needed needs done so
+   that it returns a dictionary that looks like:
+
+   .. code:: python
+
+       {
+           'input_bps': W
+           'input_pps': X
+           'output_bps': Y
+           'output_pps': Z
+        }
+
+   Should probably just use a tuple instead and if it ever bothers me enough I
+   will.
+
+Installation
+------------
+
+Get repo contents either by clone or zip and install with pip::
+
+    pip install -r requirements.txt
