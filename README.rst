@@ -101,6 +101,20 @@ need added:
    platform with a value of a dictionary containting the command to be ran. %s 
    in the command string will be substituted for the interface.
 
+   .. code:: python
+
+       class Platform(object):
+           '''Driver-like facility for getting platform commands and parsing
+
+           Dictionary ``supported`` should have keys of NetMiko platform strings with
+           dict values containing command to run for interface rates.
+           '''
+           supported = {
+               'cisco_ios': {'command': 'show interface %s | i put rate'}
+               }
+
+        # --- Redacted --- #
+
 2. A new method of _parse_X needs added under the class where X is the platform
    string. This method will recieve the command result as a string as the only
    argument (other than ``self``). Then whatever magic needed needs done so
@@ -108,14 +122,17 @@ need added:
 
    .. code:: python
 
-       {
-           'input_bps': W
-           'input_pps': X
-           'output_bps': Y
-           'output_pps': Z
-        }
+       # --- Under class Platform ... --- # 
+           def _parse_cisco_ios(self, output):
+               input_, output_ = output.splitlines()
+               return {
+                   'input_bps': input_.split()[4],
+                   'input_pps': input_.split()[6],
+                   'output_bps': output_.split()[4],
+                   'output_pps': output_.split()[6],
+                   }
 
-   Should probably just use a tuple instead and if it ever bothers me enough I
+   I should probably just use a tuple instead and if it ever bothers me enough I
    will.
 
 Installation
