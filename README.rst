@@ -133,7 +133,8 @@ need added:
                    }
 
    I should probably just use a tuple instead and if it ever bothers me enough I
-   will.
+   will. So far, though, python's dict hash seems to keep the order for those
+   key names.
 
 Installation
 ------------
