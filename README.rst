@@ -140,4 +140,5 @@ Installation
 
 Get repo contents either by clone or zip and install with pip::
 
-    pip install -r requirements.txt
+    cat requirements.txt | xargs -n 1 -L 1 pip install
+
